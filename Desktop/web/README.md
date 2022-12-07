@@ -1,1 +1,2 @@
-# expressjs-nodejs-web-starter
+# Khởi tạo
+node app.js
