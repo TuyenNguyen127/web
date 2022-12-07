@@ -1,0 +1,29 @@
+{
+  "product": [
+    {
+      "name": "ip6s",
+      "name_space": "Đại lý",
+      "id": "ip6s_1_1",
+      "color": "red",
+      "status": "Tồn kho",
+      "time_status": "Tue, 19 Aug 1975 23:15:30 GMT"
+    },
+
+    {
+      "name": "ip6s",
+      "name_space": "Cơ sở sản xuất",
+      "id": "ip6s_2_1",
+      "color": "yellow",
+      "status": "Tồn kho",
+      "time_status": "Tue, 19 Aug 1975 23:15:30 GMT"
+    }
+  ],
+  "user": [
+    {
+      "username": "tuyennguyen",
+      "password": "123456",
+      "id_user":"1669040184352",
+      "type_user":"dlpp"
+    }
+  ]
+}
