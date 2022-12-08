@@ -6,7 +6,8 @@ const productSchema = new Schema({
     id: String,
     color: String,
     namespace: String,
-    status: String
+    status: String,
+    bio: String
 })
 
 const product = mongoose.model('product', productSchema);

@@ -2,11 +2,12 @@ const { UNKNOWN, BAD_REQUEST } = require('../config/HttpStatusCodes');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const validator = require('validator');
 
 const {user, userType} = require('../models/user');
 const product = require('../models/product');
 const listProduct = require('../models/listProduct');
-const { USERTYPE_INVALID } = require('../config/ErrorMessages');
+const { USERTYPE_INVALID, EMAIL_INVALID, REPASSWORD_INCORRECT, USERNAME_EXISTS } = require('../config/ErrorMessages');
 
 const getAllUser = async (req, res) => {
     try {
@@ -18,6 +19,19 @@ const getAllUser = async (req, res) => {
         });
     }
     catch (error) {
+        console.log(error);
+        return res.status(UNKNOWN).json({success: 0})
+    }
+}
+
+const getAllProduct = async (req,res) => {
+    try {
+        const products = await product.find({});
+        return res.json({
+            success: 1,
+            products: products
+        });
+    } catch (error) {
         console.log(error);
         return res.status(UNKNOWN).json({success: 0})
     }
@@ -107,5 +121,6 @@ const createAccount = async (req, res) => {
 module.exports = {
     getAllUser,
     getListProduct,
-    createAccount
+    createAccount,
+    getAllProduct
 }

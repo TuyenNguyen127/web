@@ -9,6 +9,7 @@ const userType = {
 
 const userSchema = new Schema({
     username: String,
+    email: String,
     password: String,
     profile: String,
     type_user: String
