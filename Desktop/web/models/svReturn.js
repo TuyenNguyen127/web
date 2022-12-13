@@ -2,7 +2,8 @@ const mongoose = require('./database');
 const { Schema } = mongoose;
 
 const svReturnSchema = new Schema({
-    id: String,
+    id_product: String,
+    id_user: String,
     customer: String,
     time:{
         type: Date,

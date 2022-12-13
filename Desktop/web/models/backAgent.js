@@ -2,9 +2,8 @@ const mongoose = require('./database');
 const { Schema } = mongoose;
 
 const backAgentSchema = new Schema({
-    id: String,
+    id_product: String,
     id_user: String,
-    agent: String,
     agent_status: String,
     time:{
         type: Date,

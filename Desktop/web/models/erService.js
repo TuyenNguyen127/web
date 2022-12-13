@@ -2,7 +2,8 @@ const mongoose = require('./database');
 const { Schema } = mongoose;
 
 const erServiceSchema = new Schema({
-    id: String,
+    id_product: String,
+    id_user: String,
     arr: [
         {
             service_name: String,

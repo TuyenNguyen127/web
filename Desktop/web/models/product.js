@@ -3,7 +3,10 @@ const { Schema } = mongoose;
 
 const productSchema = new Schema({
     name: String,
-    id: String,
+    id_ag: String,
+    id_sv: String,
+    id_pr: String,
+    batch: Number,
     color: String,
     namespace: String,
     status: String,

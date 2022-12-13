@@ -11,6 +11,7 @@ const backAgent = require('../models/backAgent');
 const erService = require('../models/erService');
 const erService = require('../models/erService');
 
+//Đăng nhập
 const login = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -46,7 +47,7 @@ const login = async (req, res) => {
 
 //Nhập thông tin email
 const confirmEmail = async (req,res) => {
-  if (!req.body.id || !req.body.email) {
+  if (!req.body.id_user || !req.body.email) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   }
   if (!validator.isEmail(req.body.email)) {
@@ -54,11 +55,11 @@ const confirmEmail = async (req,res) => {
   }
 
   try {
-    await user.findByIdAndUpdate({id: req.body.id}, {email: req.body.email});
-    await regitEmail.deleteMany({id_user: req.body.id});
+    await user.findByIdAndUpdate({_id: req.body.id_user}, {email: req.body.email});
+    await regitEmail.deleteMany({id_user: req.body.id_user});
     const token = 123213;
     await new regitEmail({
-      id_user: req.body.id,
+      id_user: req.body.id_user,
       otp: token
     }).save();
     return res.json({
@@ -73,12 +74,12 @@ const confirmEmail = async (req,res) => {
 
 //Mã xác nhận email
 const regitEmail = async (req,res) => {
-  if (!req.body.id || !req.body.otp) {
+  if (!req.body.id_user || !req.body.otp) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   } 
 
   try {
-    const regitEmail_ = regitEmail.findOne({id_user: req.body.id});
+    const regitEmail_ = regitEmail.findOne({id_user: req.body.id_user});
     if (!regitEmail_) {
       return res.status(UNAUTHORIZED).json({ success: 0, errorMessage: USERNAME_INCORRECT });
     }
@@ -102,12 +103,12 @@ const forgetPassword = async (req,res) => {
 
 //Lấy ra profile của tài khoản (của chính tài khoản đang đăng nhập)
 const getProfile = async (req,res) => {
-  if (!req.querry._id) {
+  if (!req.querry.user) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   }
   
   try {
-    const user_ = user.findById(req.querry._id);
+    const user_ = user.findById(req.querry.id_user);
     return res.json({
       success: 1,
       name: user_.name,
@@ -123,7 +124,7 @@ const getProfile = async (req,res) => {
 
 //Gửi đi thông tin cần chỉnh sửa của tài khoản
 const editProfile = async (req,res) => {
-  if (!req.body.name || !req.body.password || !req.body.email || !req.querry._id) {
+  if (!req.body.name || !req.body.password || !req.body.email || !req.querry.id_user) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   }
   if (!validator.isEmail(req.body.email)) {
@@ -131,7 +132,7 @@ const editProfile = async (req,res) => {
   }
 
   try {
-    await user.findByIdAndUpdate({_id: req.querry._id}, {
+    await user.findByIdAndUpdate({_id: req.querry.id_user}, {
       name: req.body.name,
       password: req.body.password,
       email: req.body.email
@@ -144,12 +145,12 @@ const editProfile = async (req,res) => {
 
 //Lấy ra thông tin chi tiết của sản phẩm
 const infoProduct = async (req,res) => {
-  if (!req.querry.id) {
+  if (!req.querry.id_product) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   }
 
   try {
-    const product_ = product.findById(req.querry._id);
+    const product_ = product.findById(req.querry.id_product);
     return res.json({
       success: 1,
       name: product_.name,
@@ -173,12 +174,12 @@ function sortFunction(a,b){
 
 //Số lượng sản phẩm xuất ra cho các đại lý/ số lượng sản phẩm nhập về của 1 đại lý trong mỗi tháng (của tất cả các năm)
 const staticByMonthInBackAgent = async(req,res) => {
-  if (!req.body.id) {
+  if (!req.querry.id_user) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   }
 
   try {
-    const back_agent = await backAgent.find({id_user: req.querry.id});
+    const back_agent = await backAgent.find({id_user: req.querry.id_user});
     back_agent.sort(sortFunction);
     let arr = new Array;
     let k = 0;
@@ -201,7 +202,7 @@ const staticByMonthInBackAgent = async(req,res) => {
 
 //Số lượng sản phẩm xuất ra cho các đại lý/ số lượng sản phẩm nhập về của 1 đại lý trong mỗi năm
 const staticByYearInBackAgent = async(req,res) => {
-  if (!req.body.id) {
+  if (!req.querry.id) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   }
 
@@ -229,7 +230,7 @@ const staticByYearInBackAgent = async(req,res) => {
 
 //Số lượng sản phẩm cần bảo hành của 1 trung tâm bảo hành/ số lượng sản phẩm đưa đi bảo hành của 1 đại lý trong mỗi tháng (của tất cả các năm)
 const staticByMonthInErService = async(req,res) => {
-  if (!req.body.id) {
+  if (!req.querry.id) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   }
 
@@ -257,7 +258,7 @@ const staticByMonthInErService = async(req,res) => {
 
 //Số lượng sản phẩm cần bảo hành của 1 trung tâm bảo hành/ số lượng sản phẩm đưa đi bảo hành của 1 đại lý trong mỗi năm
 const staticByYearInErService = async(req,res) => {
-  if (!req.body.id) {
+  if (!req.querry.id) {
     return res.status(BAD_REQUEST).json({ success: 0 });
   }
 
@@ -294,5 +295,6 @@ module.exports = {
     staticByMonthInBackAgent,
     staticByYearInBackAgent,
     staticByMonthInErService,
-    staticByYearInErService
+    staticByYearInErService,
+    sortFunction
 }

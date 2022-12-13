@@ -2,7 +2,7 @@ const mongoose = require('./database');
 const { Schema } = mongoose;
 
 const newProductSchema = new Schema({
-    id: String,
+    id_product: String,
     id_user: String,
     producer: String,
     time:{
